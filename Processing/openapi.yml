@@ -1,0 +1,45 @@
+openapi: 3.0.0
+info:
+  title: ProcessingServiceAPI
+  description: The API for the SportGram Processing Service.
+  version: 1.0.0
+servers:
+  - url: /
+
+paths:
+  /stats:
+    get:
+      summary: Retrieve SportGram statistics
+      operationId: app.get_stats
+      responses:
+        200:
+          description: Successfully retrieved statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SportGramStats"
+        404:
+          description: Statistics not found
+
+components:
+  schemas:
+    SportGramStats:
+      type: object
+      properties:
+        num_create_posts:
+          type: integer
+        num_follow_events:
+          type: integer
+        total_likes:
+          type: integer
+        total_follow_count:
+          type: integer
+        last_updated:
+          type: string
+          format: date-time
+      required:
+        - num_create_posts
+        - num_follow_events
+        - total_likes
+        - total_follow_count
+        - last_updated

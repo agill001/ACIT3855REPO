@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: SportGramAPI
+  description: The API for the SportGram sports-focused social media platform.
+  version: 1.0.0
+tags:
+  - name: SportGram
+    description: Operations available to the SportGram platform
+
+paths:
+  /createPost:
+    post:
+      tags:
+        - SportGram
+      summary: Creates a new post about a sports event.
+      operationId: app.create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePostEvent"
+        required: true
+      responses:
+        "201":
+          description: Post created successfully
+        "400":
+          description: Invalid input
+
+  /followEvent:
+    post:
+      tags:
+        - SportGram
+      summary: Enables users to follow specific sports events.
+      operationId: app.follow_event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FollowEvent"
+        required: true
+      responses:
+        "201":
+          description: Successfully followed the event
+        "400":
+          description: Invalid input
+
+  # /createPost-events:
+  #   get:
+  #     tags:
+  #       - SportGram
+  #     summary: Retrieves createPost events between specified timestamps.
+  #     operationId: app.get_createPost_events
+  #     parameters:
+  #       - name: start_timestamp
+  #         in: query
+  #         description: Start of the time range for the events
+  #         schema:
+  #           type: string
+  #           format: date-time
+  #       - name: end_timestamp
+  #         in: query
+  #         description: End of the time range for the events
+  #         schema:
+  #           type: string
+  #           format: date-time
+  #     responses:
+  #       "200":
+  #         description: Successfully returned createPost events
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: "#/components/schemas/CreatePostEvent"
+
+  # /followEvent-events:
+  #   get:
+  #     tags:
+  #       - SportGram
+  #     summary: Retrieves followEvent events between specified timestamps.
+  #     operationId: app.get_followEvent_events
+  #     parameters:
+  #       - name: start_timestamp
+  #         in: query
+  #         description: Start of the time range for the events
+  #         schema:
+  #           type: string
+  #           format: date-time
+  #       - name: end_timestamp
+  #         in: query
+  #         description: End of the time range for the events
+  #         schema:
+  #           type: string
+  #           format: date-time
+  #     responses:
+  #       "200":
+  #         description: Successfully returned followEvent events
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: "#/components/schemas/FollowEvent"
+
+components:
+  schemas:
+    CreatePostEvent:
+      type: object
+      required:
+        - postId
+        - content
+        - eventDetails
+        - userTags
+        - timestamp
+        - trace_id
+      properties:
+        postId:
+          type: string
+          format: uuid
+        content:
+          type: string
+        eventDetails:
+          $ref: "#/components/schemas/EventDetails"
+        userTags:
+          type: array
+          items:
+            type: string
+        timestamp:
+          type: integer
+        trace_id:
+          type: string
+          format: uuid
+
+    FollowEvent:
+      type: object
+      required:
+        - eventId
+        - eventName
+        - followedBy
+        - followCount
+        - trace_id
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventName:
+          type: string
+        followedBy:
+          type: string
+        followCount:
+          type: integer
+        trace_id:
+          type: string
+          format: uuid
+
+    EventDetails:
+      type: object
+      properties:
+        eventName:
+          type: string
+        eventDate:
+          type: string
+          format: date-time

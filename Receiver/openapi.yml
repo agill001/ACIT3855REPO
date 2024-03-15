@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: SportGramAPI
+  description: The API for the SportGram sports-focused social media platform.
+  version: 1.0.0
+
+servers:
+  - url: /
+
+paths:
+  /createPost:
+    post:
+      summary: Creates a new post about a sports event.
+      operationId: app.create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createPost_body"
+        required: true
+      responses:
+        "201":
+          description: Post created successfully
+        "400":
+          description: Invalid input
+
+  /followEvent:
+    post:
+      summary: Enables users to follow specific sports events.
+      operationId: app.follow_event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/followEvent_body"
+        required: true
+      responses:
+        "201":
+          description: Successfully followed the event
+        "400":
+          description: Invalid input
+components:
+  schemas:
+    EventDetails:
+      type: object
+      properties:
+        eventName:
+          type: string
+        eventDate:
+          type: string
+          format: date-time
+    createPost_body:
+      required:
+        - postId
+        - content
+        - eventDetails
+        - userTags
+        - timestamp
+        - trace_id
+      type: object
+      properties:
+        postId:
+          type: string
+          format: uuid
+        content:
+          type: string
+        eventDetails:
+          $ref: "#/components/schemas/EventDetails"
+        userTags:
+          type: array
+          items:
+            type: string
+        timestamp:
+          type: integer
+        trace_id:
+          type: string
+    followEvent_body:
+      required:
+        - eventId
+        - eventName
+        - followedBy
+        - followCount
+        - trace_id
+      type: object
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventName:
+          type: string
+        followedBy:
+          type: string
+        followCount:
+          type: integer
+        trace_id:
+          type: string

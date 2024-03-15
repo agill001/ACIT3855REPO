@@ -1,0 +1,30 @@
+2024-03-13 20:46:19,476 - basicLogger - INFO - Retrieving createPost event at index 0
+2024-03-13 20:46:20,481 - basicLogger - ERROR - Could not find createPost event at index 0
+2024-03-13 20:46:38,334 - basicLogger - INFO - Retrieving followEvent at index 0
+2024-03-13 20:46:39,339 - basicLogger - ERROR - Could not find followEvent at index 0
+2024-03-13 20:47:19,603 - basicLogger - INFO - Retrieving followEvent at index 5
+2024-03-13 20:47:20,607 - basicLogger - ERROR - Could not find followEvent at index 5
+2024-03-13 20:47:27,617 - basicLogger - INFO - Retrieving followEvent at index 5
+2024-03-13 20:47:28,618 - basicLogger - ERROR - Could not find followEvent at index 5
+2024-03-13 20:56:38,560 - basicLogger - INFO - Retrieving followEvent at index 5
+2024-03-13 20:56:39,566 - basicLogger - ERROR - Could not find followEvent at index 5
+2024-03-13 20:56:51,525 - basicLogger - INFO - Retrieving createPost event at index 0
+2024-03-13 20:56:52,528 - basicLogger - ERROR - Could not find createPost event at index 0
+2024-03-13 21:13:02,268 - basicLogger - INFO - Retrieving createPost event at index 4
+2024-03-13 21:13:59,740 - basicLogger - INFO - Retrieving followEvent at index 5
+2024-03-13 21:15:43,173 - basicLogger - INFO - Retrieving followEvent at index 5000
+2024-03-13 21:15:44,331 - basicLogger - ERROR - Could not find followEvent at index 5000
+2024-03-13 23:57:18,666 - basicLogger - INFO - Retrieving createPost event at index 4
+2024-03-13 23:57:30,197 - basicLogger - INFO - Retrieving followEvent at index 5000
+2024-03-13 23:57:31,383 - basicLogger - ERROR - Could not find followEvent at index 5000
+2024-03-13 23:57:51,175 - basicLogger - INFO - Retrieving followEvent at index 5
+2024-03-13 23:58:36,925 - basicLogger - INFO - Retrieving createPost event at index 400
+2024-03-13 23:58:38,246 - basicLogger - ERROR - Could not find createPost event at index 400
+2024-03-13 23:58:49,414 - basicLogger - INFO - Retrieving createPost event at index 0
+2024-03-14 11:40:08,690 - basicLogger - INFO - Retrieving createPost event at index 0
+2024-03-14 11:40:19,933 - basicLogger - INFO - Retrieving createPost event at index 100
+2024-03-14 11:40:28,661 - basicLogger - INFO - Retrieving createPost event at index 1000
+2024-03-14 11:40:29,902 - basicLogger - ERROR - Could not find createPost event at index 1000
+2024-03-14 11:40:49,306 - basicLogger - INFO - Retrieving followEvent at index 0
+2024-03-14 11:41:00,834 - basicLogger - INFO - Retrieving followEvent at index 1000
+2024-03-14 11:41:02,133 - basicLogger - ERROR - Could not find followEvent at index 1000

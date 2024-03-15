@@ -1,0 +1,31 @@
+# datastore:
+#   hostname: 'acit3855lab6.eastus.cloudapp.azure.com'
+#   user: "agill"
+#   password: "123#Password"
+#   hostname: "localhost"
+#   port: 3306
+#   db: "lab4"
+# version: 1
+# datastore:
+#   hostname: "acit3855lab6.eastus.cloudapp.azure.com"
+#   user: "user"
+#   password: "Password"
+#   port: 3306
+#   db: "events"
+
+#   events:
+#     hostname: acit3855lab6.eastus.cloudapp.azure.com
+#     port: 9092
+#     topic: events
+
+version: 1
+datastore:
+  user: user
+  password: Password
+  hostname: acit3855lab6.eastus.cloudapp.azure.com
+  port: 3306
+  db: events
+events:
+  hostname: acit3855lab6.eastus.cloudapp.azure.com
+  port: 9092
+  topic: events

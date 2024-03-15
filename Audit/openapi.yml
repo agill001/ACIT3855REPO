@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Audit API
+  description: API for auditing events from SportGram platform.
+  version: "1.0.0"
+
+servers:
+  - url: /
+
+paths:
+  /createPost:
+    get:
+      summary: Retrieve a createPost event by index from the Kafka message queue
+      operationId: app.get_create_post_event
+      parameters:
+        - name: index
+          in: query
+          required: true
+          description: Index of the createPost event in the Kafka message queue
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successfully returned a createPost event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatePostEvent"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "404":
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /followEvent:
+    get:
+      summary: Retrieve a followEvent event by index from the Kafka message queue
+      operationId: app.get_follow_event
+      parameters:
+        - name: index
+          in: query
+          required: true
+          description: Index of the followEvent in the Kafka message queue
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successfully returned a followEvent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowEvent"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "404":
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    CreatePostEvent:
+      type: object
+      properties:
+        postId:
+          type: string
+          format: uuid
+        content:
+          type: string
+        eventDetails:
+          type: object
+        userTags:
+          type: array
+          items:
+            type: string
+        timestamp:
+          type: integer
+        trace_id:
+          type: string
+          format: uuid
+
+    FollowEvent:
+      type: object
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventName:
+          type: string
+        followedBy:
+          type: string
+        followCount:
+          type: integer
+        trace_id:
+          type: string
+          format: uuid
