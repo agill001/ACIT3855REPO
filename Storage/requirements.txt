@@ -6,3 +6,4 @@ pymysql==1.0.2
 pykafka==2.4.0
 openapi_spec_validator==0.3.1
 python-dateutil==2.8.1
+flask==2.0.2
