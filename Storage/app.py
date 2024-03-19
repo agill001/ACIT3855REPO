@@ -72,46 +72,46 @@ def follow_event(body):
 # # Functions to retrieve events
 
 
-# def get_createPost_events(start_timestamp, end_timestamp):
-#     session = Session()
-#     try:
-#         start = datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%S")
-#         end = datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S")
+def get_createPost_events(start_timestamp, end_timestamp):
+    session = Session()
+    try:
+        start = datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%S")
+        end = datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S")
 
-#         logger.info(
-#             f"Fetching createPost events from {start_timestamp} to {end_timestamp}")
-#         results = session.query(CreatePostEvent).filter(
-#             and_(CreatePostEvent.date_created >= start,
-#                  CreatePostEvent.date_created < end)
-#         ).all()
-#         logger.info(f"Successfully fetched {len(results)} createPost events")
-#         return [result.to_dict() for result in results], 200
-#     except Exception as e:
-#         logger.error(f"Error fetching createPost events: {e}")
-#         return NoContent, 500
-#     finally:
-#         session.close()
+        logger.info(
+            f"Fetching createPost events from {start_timestamp} to {end_timestamp}")
+        results = session.query(CreatePostEvent).filter(
+            and_(CreatePostEvent.date_created >= start,
+                 CreatePostEvent.date_created < end)
+        ).all()
+        logger.info(f"Successfully fetched {len(results)} createPost events")
+        return [result.to_dict() for result in results], 200
+    except Exception as e:
+        logger.error(f"Error fetching createPost events: {e}")
+        return NoContent, 500
+    finally:
+        session.close()
 
 
-# def get_followEvent_events(start_timestamp, end_timestamp):
-#     session = Session()
-#     try:
-#         start = datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%S")
-#         end = datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S")
+def get_followEvent_events(start_timestamp, end_timestamp):
+    session = Session()
+    try:
+        start = datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%S")
+        end = datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S")
 
-#         logger.info(
-#             f"Fetching followEvent events from {start_timestamp} to {end_timestamp}")
-#         results = session.query(FollowEvent).filter(
-#             and_(FollowEvent.date_created >= start,
-#                  FollowEvent.date_created < end)
-#         ).all()
-#         logger.info(f"Successfully fetched {len(results)} followEvent events")
-#         return [result.to_dict() for result in results], 200
-#     except Exception as e:
-#         logger.error(f"Error fetching followEvent events: {e}")
-#         return NoContent, 500
-#     finally:
-#         session.close()
+        logger.info(
+            f"Fetching followEvent events from {start_timestamp} to {end_timestamp}")
+        results = session.query(FollowEvent).filter(
+            and_(FollowEvent.date_created >= start,
+                 FollowEvent.date_created < end)
+        ).all()
+        logger.info(f"Successfully fetched {len(results)} followEvent events")
+        return [result.to_dict() for result in results], 200
+    except Exception as e:
+        logger.error(f"Error fetching followEvent events: {e}")
+        return NoContent, 500
+    finally:
+        session.close()
 
 
 # Function to process Kafka messages

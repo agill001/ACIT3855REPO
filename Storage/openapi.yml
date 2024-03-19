@@ -44,63 +44,63 @@ paths:
         "400":
           description: Invalid input
 
-  # /createPost-events:
-  #   get:
-  #     tags:
-  #       - SportGram
-  #     summary: Retrieves createPost events between specified timestamps.
-  #     operationId: app.get_createPost_events
-  #     parameters:
-  #       - name: start_timestamp
-  #         in: query
-  #         description: Start of the time range for the events
-  #         schema:
-  #           type: string
-  #           format: date-time
-  #       - name: end_timestamp
-  #         in: query
-  #         description: End of the time range for the events
-  #         schema:
-  #           type: string
-  #           format: date-time
-  #     responses:
-  #       "200":
-  #         description: Successfully returned createPost events
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 $ref: "#/components/schemas/CreatePostEvent"
+  /createPost-events:
+    get:
+      tags:
+        - SportGram
+      summary: Retrieves createPost events between specified timestamps.
+      operationId: app.get_createPost_events
+      parameters:
+        - name: start_timestamp
+          in: query
+          description: Start of the time range for the events
+          schema:
+            type: string
+            format: date-time
+        - name: end_timestamp
+          in: query
+          description: End of the time range for the events
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Successfully returned createPost events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CreatePostEvent"
 
-  # /followEvent-events:
-  #   get:
-  #     tags:
-  #       - SportGram
-  #     summary: Retrieves followEvent events between specified timestamps.
-  #     operationId: app.get_followEvent_events
-  #     parameters:
-  #       - name: start_timestamp
-  #         in: query
-  #         description: Start of the time range for the events
-  #         schema:
-  #           type: string
-  #           format: date-time
-  #       - name: end_timestamp
-  #         in: query
-  #         description: End of the time range for the events
-  #         schema:
-  #           type: string
-  #           format: date-time
-  #     responses:
-  #       "200":
-  #         description: Successfully returned followEvent events
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 $ref: "#/components/schemas/FollowEvent"
+  /followEvent-events:
+    get:
+      tags:
+        - SportGram
+      summary: Retrieves followEvent events between specified timestamps.
+      operationId: app.get_followEvent_events
+      parameters:
+        - name: start_timestamp
+          in: query
+          description: Start of the time range for the events
+          schema:
+            type: string
+            format: date-time
+        - name: end_timestamp
+          in: query
+          description: End of the time range for the events
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Successfully returned followEvent events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FollowEvent"
 
 components:
   schemas:
