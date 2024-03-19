@@ -40,16 +40,15 @@ services:
     volumes:
       - my-db:/var/lib/mysql
 
-
   receiver:
-    image: receiver:latest
+    image: receiver
     ports:
       - "8080:8080"
     depends_on:
       - kafka
 
   storage:
-    image: storage:latest
+    image: storage
     ports:
       - "8090:8090"
     depends_on:
@@ -63,13 +62,12 @@ services:
       - storage
 
   audit_log:
-    image: audit_log:latest
+    image: audit_log
     ports:
       - "8110:8110"
     depends_on:
       - kafka
-
-        
+       
 volumes:
   my-db:
 
