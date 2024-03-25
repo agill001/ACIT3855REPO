@@ -56,13 +56,13 @@ paths:
           description: Start of the time range for the events
           schema:
             type: string
-            format: date-time
+            # format: date-time
         - name: end_timestamp
           in: query
           description: End of the time range for the events
           schema:
             type: string
-            format: date-time
+            # format: date-time
       responses:
         "200":
           description: Successfully returned createPost events
@@ -85,13 +85,13 @@ paths:
           description: Start of the time range for the events
           schema:
             type: string
-            format: date-time
+            # format: date-time
         - name: end_timestamp
           in: query
           description: End of the time range for the events
           schema:
             type: string
-            format: date-time
+            # format: date-time
       responses:
         "200":
           description: Successfully returned followEvent events
@@ -160,4 +160,4 @@ components:
           type: string
         eventDate:
           type: string
-          format: date-time
+          # format: date-time
