@@ -10,6 +10,9 @@ import datetime
 import requests
 
 
+from flask_cors import CORS
+
+
 # Load configurations
 with open('app_conf.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -145,6 +148,13 @@ def populate_sportgram_stats():
 
 # lab8
 # Setup connexion with CORS
+app = connexion.FlaskApp(__name__, specification_dir='')
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
+
+app.add_api("openapi.yaml",
+            strict_validation=True,
+            validate_responses=True)
 
 
 def init_scheduler():
@@ -154,9 +164,9 @@ def init_scheduler():
     sched.start()
 
 
-# before lab8
-app = connexion.FlaskApp(__name__, specification_dir='./')
-app.add_api('openapi.yml', strict_validation=True, validate_responses=True)
+# # before lab8
+# app = connexion.FlaskApp(__name__, specification_dir='./')
+# app.add_api('openapi.yml', strict_validation=True, validate_responses=True)
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ import logging.config
 import json
 from pykafka import KafkaClient
 
+from flask_cors import CORS
 
 # Load configurations
 with open('app_conf.yml', 'r') as f:
@@ -78,9 +79,14 @@ def get_follow_event(index):
     return {"message": "Not Found"}, 404
 
 
-# # Setup connexion
 app = connexion.FlaskApp(__name__, specification_dir='')
-app.add_api('openapi.yml', strict_validation=True, validate_responses=True)
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
+
+app.add_api("openapi.yaml",
+            strict_validation=True,
+            validate_responses=True)
 
 if __name__ == "__main__":
+
     app.run(port=8110)
