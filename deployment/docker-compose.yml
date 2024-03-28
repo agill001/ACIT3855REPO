@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 services:
   zookeeper:
     image: wurstmeister/zookeeper
@@ -29,14 +29,14 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_DATABASE: 'events'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'Password'
-      MYSQL_ROOT_PASSWORD: 'Password'
+      MYSQL_DATABASE: "events"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "Password"
+      MYSQL_ROOT_PASSWORD: "Password"
     ports:
-      - '3306:3306'
+      - "3306:3306"
     expose:
-      - '3306'
+      - "3306"
     volumes:
       - my-db:/var/lib/mysql
 
@@ -67,7 +67,14 @@ services:
       - "8110:8110"
     depends_on:
       - kafka
-       
+
+  dashboard:
+    image: dashboard-ui:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "processing"
+      - "audit_log"
+
 volumes:
   my-db:
-

@@ -8,6 +8,8 @@ from sqlalchemy.orm import sessionmaker
 from stats import Base, SportGramStats
 import datetime
 import requests
+from connexion.middleware import MiddlewarePosition
+from starlette.middleware.cors import CORSMiddleware
 
 # Load configurations
 with open('app_conf.yml', 'r') as f:
@@ -142,15 +144,30 @@ def populate_sportgram_stats():
         logger.info("Periodic processing of SportGram statistics has ended")
 
 
+# lab8
+# Setup connexion with CORS
+app = connexion.FlaskApp(__name__, specification_dir='./')
+app.add_middleware(
+    CORSMiddleware,
+    position=MiddlewarePosition.BEFORE_EXCEPTION,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.add_api('openapi.yml', strict_validation=True, validate_responses=True)
+
+
 def init_scheduler():
     sched = BackgroundScheduler(daemon=True)
     sched.add_job(populate_sportgram_stats, 'interval',
                   seconds=app_config['scheduler']['period_sec'])
     sched.start()
 
+# before lab8
+# app = connexion.FlaskApp(__name__, specification_dir='./')
+# app.add_api('openapi.yml', strict_validation=True, validate_responses=True)
 
-app = connexion.FlaskApp(__name__, specification_dir='./')
-app.add_api('openapi.yml', strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":
     init_scheduler()

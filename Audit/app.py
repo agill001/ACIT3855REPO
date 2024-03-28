@@ -4,6 +4,10 @@ import logging.config
 import json
 from pykafka import KafkaClient
 
+# lab8
+from connexion.middleware import MiddlewarePosition
+from starlette.middleware.cors import CORSMiddleware
+
 # Load configurations
 with open('app_conf.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -13,6 +17,7 @@ with open('log_conf.yml', 'r') as f:
     logging.config.dictConfig(log_config)
 
 logger = logging.getLogger('basicLogger')
+
 
 # Function to retrieve a specific 'createPost' event by index
 
@@ -76,8 +81,20 @@ def get_follow_event(index):
     return {"message": "Not Found"}, 404
 
 
-# Setup connexion
+# lab8
+# Setup connexion with CORS
 app = connexion.FlaskApp(__name__, specification_dir='')
+app.add_middleware(
+    CORSMiddleware,
+    position=MiddlewarePosition.BEFORE_EXCEPTION,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# # Setup connexion
+# app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api('openapi.yml', strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":
