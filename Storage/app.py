@@ -5,6 +5,7 @@ from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 import yaml
 import json
+import time
 from datetime import datetime
 from dateutil import parser
 from create_tables import CreatePostEvent, FollowEvent
@@ -23,7 +24,10 @@ with open('log_conf.yml', 'r') as f:
 logger = logging.getLogger('basicLogger')
 
 DATABASE_URI = f"mysql+pymysql://{app_config['datastore']['user']}:{app_config['datastore']['password']}@{app_config['datastore']['hostname']}:{app_config['datastore']['port']}/{app_config['datastore']['db']}"
-engine = create_engine(DATABASE_URI)
+# engine = create_engine(DATABASE_URI)
+# Lab 9 Part 6: Modify the create_engine call to manage connection pool
+engine = create_engine(DATABASE_URI, pool_size=10,
+                       pool_recycle=3600, pool_pre_ping=True)
 Session = sessionmaker(bind=engine)
 
 
@@ -113,40 +117,91 @@ def get_followEvent_events(start_timestamp, end_timestamp):
     finally:
         session.close()
 
-
+# before lab9
 # Function to process Kafka messages
+# def process_messages():
+#     try:
+#         hostname = "%s:%d" % (
+#             app_config["events"]["hostname"], app_config["events"]["port"])
+#         client = KafkaClient(hosts=hostname)
+#         topic = client.topics[str.encode(app_config["events"]["topic"])]
+#         consumer = topic.get_simple_consumer(consumer_group=b'event_group',
+#                                              reset_offset_on_start=False,
+#                                              auto_offset_reset=OffsetType.LATEST)
+
+#         for msg in consumer:
+#             msg_str = msg.value.decode('utf-8')
+#             msg = json.loads(msg_str)
+#             logger.info("Message: %s" % msg)
+
+# # Process different types of messages
+#             if msg["type"] == "createPost":
+#                 payload = msg["payload"]
+#                 create_post(payload)
+#                 logger.info("create post added")
+
+#             elif msg["type"] == "followEvent":
+#                 payload = msg["payload"]
+#                 follow_event(payload)
+#                 logger.info("follow event added")
+
+#             consumer.commit_offsets()
+
+#             logger.debug(f"Stored event request successfully.")
+
+#     except Exception as e:
+#         print(f"error: {e}")
+
+
+# lab9
 def process_messages():
-    try:
-        hostname = "%s:%d" % (
-            app_config["events"]["hostname"], app_config["events"]["port"])
-        client = KafkaClient(hosts=hostname)
-        topic = client.topics[str.encode(app_config["events"]["topic"])]
-        consumer = topic.get_simple_consumer(consumer_group=b'event_group',
-                                             reset_offset_on_start=False,
-                                             auto_offset_reset=OffsetType.LATEST)
+    # Lab 9 Part 4: Define a maximum number of retries and retry sleep time
+    max_retries = app_config['kafka']['max_retries']
+    retry_sleep_time = app_config['kafka']['retry_sleep_time']
+    retry_count = 0
 
-        for msg in consumer:
-            msg_str = msg.value.decode('utf-8')
-            msg = json.loads(msg_str)
-            logger.info("Message: %s" % msg)
+    # Lab 9 Part 4: Retry logic for Kafka connection
+    while retry_count < max_retries:
+        try:
+            logger.info(
+                f"Trying to connect to Kafka, attempt {retry_count + 1}")
+            hostname = "%s:%d" % (
+                app_config["events"]["hostname"], app_config["events"]["port"])
+            client = KafkaClient(hosts=hostname)
+            topic = client.topics[str.encode(app_config["events"]["topic"])]
+            consumer = topic.get_simple_consumer(consumer_group=b'event_group',
+                                                 reset_offset_on_start=False,
+                                                 auto_offset_reset=OffsetType.LATEST)
 
-# Process different types of messages
-            if msg["type"] == "createPost":
-                payload = msg["payload"]
-                create_post(payload)
-                logger.info("create post added")
+            for msg in consumer:
+                msg_str = msg.value.decode('utf-8')
+                msg = json.loads(msg_str)
+                logger.info("Message: %s" % msg)
 
-            elif msg["type"] == "followEvent":
-                payload = msg["payload"]
-                follow_event(payload)
-                logger.info("follow event added")
+                # Process different types of messages
+                if msg["type"] == "createPost":
+                    payload = msg["payload"]
+                    create_post(payload)
+                    logger.info("create post added")
 
-            consumer.commit_offsets()
+                elif msg["type"] == "followEvent":
+                    payload = msg["payload"]
+                    follow_event(payload)
+                    logger.info("follow event added")
 
-            logger.debug(f"Stored event request successfully.")
+                consumer.commit_offsets()
 
-    except Exception as e:
-        print(f"error: {e}")
+                logger.debug("Stored event request successfully.")
+
+            break  # Successful connection, break out of the loop
+
+        except Exception as e:
+            logger.error(f"Error connecting to Kafka: {e}")
+            time.sleep(retry_sleep_time)
+            retry_count += 1
+
+    if retry_count == max_retries:
+        logger.error("Failed to connect to Kafka after maximum retries")
 
 
 app = connexion.FlaskApp(__name__, specification_dir='')

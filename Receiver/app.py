@@ -8,6 +8,7 @@ import requests
 import datetime
 import json
 from pykafka import KafkaClient
+import time
 
 # Load configuration files
 with open('app_conf.yml', 'r') as f:
@@ -17,16 +18,18 @@ with open('app_conf.yml', 'r') as f:
 create_post_url = app_config['eventstore1']['url']
 follow_event_url = app_config['eventstore2']['url']
 
+
+# before lab9
 # Kafka Producer setup (lab6)
-try:
-    kafka_client = KafkaClient(
-        hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
-    kafka_topic = kafka_client.topics[str.encode(
-        app_config['events']['topic'])]
-    kafka_producer = kafka_topic.get_sync_producer()
-except Exception as e:
-    print(f"Error connecting to Kafka: {e}")
-    # Exit or handle the error appropriately
+# try:
+#     kafka_client = KafkaClient(
+#         hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
+#     kafka_topic = kafka_client.topics[str.encode(
+#         app_config['events']['topic'])]
+#     kafka_producer = kafka_topic.get_sync_producer()
+# except Exception as e:
+#     print(f"Error connecting to Kafka: {e}")
+#     # Exit or handle the error appropriately
 
 
 # Load logging configuration
@@ -71,6 +74,34 @@ logger = logging.getLogger('basicLogger')
 
 
 """ after lab6 code  """
+
+
+# Lab 9 Part 5: Establish Kafka connection when service starts
+def get_kafka_producer():
+    max_retries = app_config['kafka']['max_retries']
+    retry_sleep_time = app_config['kafka']['retry_sleep_time']
+    retry_count = 0
+
+    while retry_count < max_retries:
+        try:
+            kafka_client = KafkaClient(
+                hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
+            kafka_topic = kafka_client.topics[str.encode(
+                app_config['events']['topic'])]
+            producer = kafka_topic.get_sync_producer()
+            logger.info(f"Connected to Kafka on attempt {retry_count + 1}")
+            return producer
+
+        except Exception as e:
+            logger.error(f"Error connecting to Kafka: {e}")
+            retry_count += 1
+            time.sleep(retry_sleep_time)
+
+    logger.error("Failed to connect to Kafka after maximum retries")
+    return None
+
+
+kafka_producer = get_kafka_producer()
 
 
 def create_post(body):
