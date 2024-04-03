@@ -7,3 +7,8 @@ events:
   hostname: acit3855lab6.eastus.cloudapp.azure.com
   port: 9092
   topic: events
+# Lab 9 - Kafka Retry Configurations
+kafka:
+  max_retries: 5 # Maximum number of retries for Kafka connection
+  retry_sleep_time: 10 # Time to wait between retries (in seconds)
+
