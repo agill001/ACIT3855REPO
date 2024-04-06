@@ -8,20 +8,42 @@ from sqlalchemy.orm import sessionmaker
 from stats import Base, SportGramStats
 import datetime
 import requests
-
-
+import os
 from flask_cors import CORS
 
-
+# before lab 10
 # Load configurations
-with open('app_conf.yml', 'r') as f:
+# with open('app_conf.yml', 'r') as f:
+#     app_config = yaml.safe_load(f.read())
+
+# with open('log_conf.yml', 'r') as f:
+#     log_config = yaml.safe_load(f.read())
+
+# logging.config.dictConfig(log_config)
+# logger = logging.getLogger('basicLogger')
+
+# Lab10 Part 1: Determine the environment and set configuration file paths
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/app_conf.yml"
+    log_conf_file = "/config/log_conf.yml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yml"
+    log_conf_file = "log_conf.yml"
+
+# Load configurations from determined paths
+with open(app_conf_file, 'r') as f:
     app_config = yaml.safe_load(f.read())
 
-with open('log_conf.yml', 'r') as f:
+with open(log_conf_file, 'r') as f:
     log_config = yaml.safe_load(f.read())
+    logging.config.dictConfig(log_config)
 
-logging.config.dictConfig(log_config)
 logger = logging.getLogger('basicLogger')
+logger.info("App Conf File: %s" % app_conf_file)
+logger.info("Log Conf File: %s" % log_conf_file)
+
 
 # Database setup
 DB_ENGINE = create_engine(f"sqlite:///{app_config['datastore']['filename']}")
