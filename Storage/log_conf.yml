@@ -12,7 +12,7 @@ handlers:
     class: logging.FileHandler
     level: DEBUG
     formatter: simple
-    filename: app.log
+    filename: /logs/app_storage.log
 loggers:
   basicLogger:
     level: DEBUG
@@ -21,4 +21,4 @@ loggers:
 root:
   level: DEBUG
   handlers: [console]
-disable_existing_loggers: false
+# disable_existing_loggers: false
