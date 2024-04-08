@@ -44,11 +44,22 @@ logger = logging.getLogger('basicLogger')
 logger.info("App Conf File: %s" % app_conf_file)
 logger.info("Log Conf File: %s" % log_conf_file)
 
+# #before lab10
+# # Database setup
+# DB_ENGINE = create_engine(f"sqlite:///{app_config['datastore']['filename']}")
+# Base.metadata.bind = DB_ENGINE
+# DB_SESSION = sessionmaker(bind=DB_ENGINE)
 
+# lab10 part4
 # Database setup
 DB_ENGINE = create_engine(f"sqlite:///{app_config['datastore']['filename']}")
 Base.metadata.bind = DB_ENGINE
 DB_SESSION = sessionmaker(bind=DB_ENGINE)
+
+# Check if SQLite file exists and create it with an empty stats table if it does not
+if not os.path.exists(app_config['datastore']['filename']):
+    Base.metadata.create_all(DB_ENGINE)
+    logger.info("SQLite file created with an empty stats table")
 
 
 def get_stats():

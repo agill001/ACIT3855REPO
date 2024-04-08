@@ -78,6 +78,7 @@ services:
     volumes:
       - /home/labuser/config/processing:/config
       - /home/labuser/logs:/logs
+      - processing-db:/data # Added for Docker volume for SQLite database
     depends_on:
       - storage
 
@@ -103,3 +104,4 @@ services:
 
 volumes:
   my-db:
+  processing-db: # Added as a new Docker volume for the Processing service
