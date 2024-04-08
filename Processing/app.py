@@ -107,8 +107,7 @@ def populate_sportgram_stats():
         stats = session.query(SportGramStats).order_by(
             SportGramStats.id.desc()).first()
         # if stats dont exist use default values
-        last_updated = stats.last_updated if stats else datetime.datetime(
-            datetime.datetime.now().year, 1, 1)
+        last_updated = stats.last_updated if stats else datetime.datetime.now()
 
         # get datetime
         current_datetime = datetime.datetime.now()
