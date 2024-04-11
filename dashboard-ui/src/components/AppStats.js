@@ -7,7 +7,7 @@ export default function AppStats() {
     const [error, setError] = useState(null)
 
     const getStats = () => {
-        fetch(`http://acit3855lab6.eastus.cloudapp.azure.com/processing/stats`)
+        fetch(`http://acit3855lab6.eastus.cloudapp.azure.com:8100/stats`)
             .then(res => res.json())
             .then(
                 (result) => {
