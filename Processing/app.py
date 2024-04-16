@@ -182,12 +182,12 @@ def populate_sportgram_stats():
 # lab8
 # Setup connexion with CORS
 app = connexion.FlaskApp(__name__, specification_dir='')
-if "TARGET_ENV" not in os.environ or os.environ["TARGET_ENV"] != "test":
-    CORS(app.app)
-    app.app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 
-app.add_api("openapi.yml", base_path="/processing",
-            strict_validation=True, validate_responses=True)
+app.add_api("openapi.yml",
+            strict_validation=True,
+            validate_responses=True)
 
 
 def init_scheduler():
